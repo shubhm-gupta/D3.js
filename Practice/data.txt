@@ -1,0 +1,5 @@
+{ "people" : [
+ {"name":"William", "color":"Green", "age":"5"},
+ {"name":"Sophia", "color":"Pink", "age":"6"},
+ {"name":"Emily", "color":"Red", "age":"7"}
+] }

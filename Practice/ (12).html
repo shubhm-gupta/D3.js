@@ -1,0 +1,63 @@
+﻿<! Purpose of this excercie: Learn how to load data from data files>
+<html>
+<head>
+	<title>D3 Test</title>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+    <script src="d3.layout.cloud.js"></script>
+</head>
+<body>
+<script>
+	var myWords = [{text: "Hello1", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello2", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello3", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello4", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello5", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello6", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello7", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}, 
+				   {text: "Hello8", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "Hello world1", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "Hello world2", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "Hello world3", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "Hello world4", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "Hello world5", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "foo1", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "foo2", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "foo3", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]},
+				   {text: "foo4", size: 10 + Math.random() * 90, color: d3.schemeDark2[Math.floor(Math.random() * 7)]}]
+	
+	var layout = d3.layout.cloud()
+		.size([500, 500])
+		.words(myWords)
+		.padding(5)
+		.rotate(function() { return Math.floor(Math.random() * 10) * 135; })
+		.font("Impact")
+		.fontSize(function(d) { return d.size; })
+		.on("end", draw);
+
+	layout.start();
+
+	function draw(words) {
+	  d3.select("body").append("svg")
+		  .attr("width", layout.size()[0])
+		  .attr("height", layout.size()[1])
+		.append("g")
+		  .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+		.selectAll("text")
+		  .data(words)
+		.enter().append("text")
+		  .style("font-size", function(d) { return d.size + "px"; })
+		  .style("fill", function(d) { return d.color; })
+		  .style("font-family", "Impact")
+		  .attr("text-anchor", "middle")
+		  .attr("transform", function(d) {
+			return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+		  })
+		  .text(function(d) { return d.text; });
+	}
+//Task 1: change the rotate function of the layout so that all words are horizontal.
+//Task 2: change the rotate function of the layout so that each word has a random angel.
+//Task 3: generate a word cloud according to your own input in a data file
+</script>
+</body>
+

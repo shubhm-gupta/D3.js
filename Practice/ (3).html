@@ -1,0 +1,44 @@
+<! Purpose of this excercie: Learn how to use data sticked with visual elements>
+<html>
+<head>
+	<title>D3 Test</title>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+	<div id = "div1">
+	</div> 	
+	<div id = "div2">
+	</div> 	
+	
+	<script type="text/javascript">
+		var arr = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+		d3.select("#div1")
+		  .selectAll("p")
+		  .data(arr)
+		  .enter()
+		  .append("p")
+		    .text(function (d) {return d})  //use the datum associated with the element
+			.text(d => d)
+
+		var arr = ["a", "b", "c", "d", "c"]
+		d3.select("#div2")
+		  .selectAll("p")
+		  .data(arr)
+		  .enter()
+		  .append("p")
+		    .text(function (d, i) {return "Value is " + d + "; Index is " + i})  //use the datum and its index 
+		    .text((d, i) => "Value is " + d + "; Index is " + i)
+
+		//part 3 - use "this", the DOM element associated with the datum
+		var arr = [5, 10, 11, 14, 4]
+		d3.select("#div1")
+		  .selectAll("p")
+		  .data(arr)
+		    .text(function(d) {return d3.select(this).text() + " sold " + d + " apples"})
+
+
+//Task: Uncomment part 3 and observe how the html page works
+	</script>
+</body>
+</html>

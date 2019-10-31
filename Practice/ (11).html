@@ -1,0 +1,50 @@
+<! Purpose of this excercie: Learn how to load data from data files>
+<html>
+<head>
+	<title>D3 Test</title>
+	<meta charset="utf-8">
+	<script src="http://d3js.org/d3.v5.min.js"></script>
+</head>
+  <body>
+  <input type="button" value="Load Data" onclick="LoadDataClick()" />
+  <br />
+  <svg width="300" height="300"></svg>
+  <script type="text/javascript">
+
+   function LoadDataClick() {
+    d3.json("data.txt").then(LoadDataReady);
+   }
+
+   function LoadDataReady(dataset) {
+    var svg = d3.select("svg");
+    svg.selectAll("rect")
+     .data(dataset.people)
+     .enter()
+     .append("rect")
+	   .attr("height", function(d) {return d.age * 10;})
+	   .attr("width", 30)
+	   .attr("x", function(d, i) {return i * 80 + 40;})
+	   .attr("y", function(d) {return 140 - d.age * 10;})
+	   .attr("fill", function(d) {return d.color;});
+    	
+    svg.selectAll("text")
+     .data(dataset.people)
+     .enter()
+     .append("text")
+       .text(function(d) {return d.name;})
+       .attr("x", function(d, i) {return i * 80 + 55;})
+       .attr("y", 180)
+       .attr("font-family", "sans-serif")
+       .attr("font-size", "20px")
+       .attr("text-anchor", "middle");
+   }
+//  To run Exercise10.html:
+
+//1. Launch Web Server for Chrome.
+//2. From the launch dialog, choose the folder with your html files and the data file. 
+//3. In Chrome address bar, type http://127.0.0.1:8887/Exercise10.html to launch the webpage. 
+//4. click the Load Data button to see the bars and labels. 
+
+  </script>
+ </body>
+</html>
