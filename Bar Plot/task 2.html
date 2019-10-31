@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <style>
+        .bar {
+            fill: steelblue;
+        }
+		.toolTip {
+			position: absolute;
+			display: none;
+			min-width: 80px;
+			height: auto;
+			background: none repeat scroll 0 0 #ffffff;
+			border: 1px solid #6F257F;
+			padding: 14px;
+			text-align: center;
+		}
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+<body>
+<svg width="600" height="500"></svg>
+<script>
+
+    var svg = d3.select("svg"),
+        margin = 200,
+        width = svg.attr("width") - margin,
+        height = svg.attr("height") - margin
+	
+    svg.append("text")
+       .attr("transform", "translate(100,0)")
+       .attr("x", 50)
+       .attr("y", 50)
+       .attr("font-size", "24px")
+       .text("XYZ Foods Stock Price")
+
+    var xScale = d3.scaleLinear().range([0, width]),
+        yScale = d3.scaleBand().range([height, 0]).padding(0.4);
+
+    var g = svg.append("g")
+               .attr("transform", "translate(" + 100 + "," + 100 + ")");
+	
+	var tooltip = d3.select("body").append("div").attr("class", "toolTip");
+
+
+    d3.csv("xyz.csv", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        xScale.domain([0, d3.max(data, function(d) { return d.value; })]);
+        yScale.domain(data.map(function(d) { return d.year; }));
+
+        g.append("g")
+         .attr("transform", "translate(0," + height + ")")
+         .call(d3.axisBottom(xScale).tickFormat(function(d){
+                    return "$" + d;
+                }).ticks(10))
+		.append("text")
+         .attr("y", height - 250)
+         .attr("x", width - 100)
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text("Stock Price");
+         
+
+        g.append("g")
+         .call(d3.axisLeft(yScale))
+		 .append("text")
+         .attr("transform", "rotate(-90)")
+         .attr("y", 6)
+         .attr("dy", "-5.1em")
+         .attr("text-anchor", "end")
+         .attr("stroke", "black")
+         .text("Year");
+         
+
+        g.selectAll(".bar")
+         .data(data)
+         .enter().append("rect")
+         .attr("class", "bar")
+         //.attr("x", function(d) { return xScale(d.value); })
+         .attr("y", function(d) { return yScale(d.year); })
+		 .attr("height", yScale.bandwidth())
+         .attr("width", function(d) {return xScale(d.value); } )
+		 
+		 //**************Animations************
+		 
+		 .on("mousemove", function(d){
+            tooltip
+              .style("left", d3.event.pageX - 50 + "px")
+              .style("top", d3.event.pageY - 70 + "px")
+              .style("display", "inline-block")
+              .html((d.year) + "<br>" + "$" + (d.value));
+        })
+    		.on("mouseout", function(d){ tooltip.style("display", "none");});
+    });
+</script>
+</body>
+</html>
